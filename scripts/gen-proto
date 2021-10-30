@@ -1,0 +1,13 @@
+#! /usr/bin/env bash
+
+#! /usr/bin/env bash
+set -e
+
+for proto_file in $(find "./proto/" -name "*.proto"); do
+  protoc --proto_path=./proto/ $proto_file \
+    -I proto -I .third_party/googleapis -I .third_party/envoyproxy -I .third_party/gogoprotobuf \
+    --gofast_out=Mgoogle/protobuf/any.protos=github.com/gogo/protobuf/types,Mgoogle/protobuf/duration.proto=github.com/gogo/protobuf/types,Mgoogle/protobuf/struct.proto=github.com/gogo/protobuf/types,Mgoogle/protobuf/wrappers.proto=github.com/gogo/protobuf/types,Mgoogle/protobuf/timestamp.proto=github.com/gogo/protobuf/types,paths=source_relative:${PROTO_GO_GEN} \
+    --go-grpc_out=paths=source_relative:${PROTO_GO_GEN} \
+    --grpc-gateway_out=paths=source_relative:${PROTO_GO_GEN} \
+    --validate_out=paths=source_relative,"lang=go:${PROTO_GO_GEN}"
+done

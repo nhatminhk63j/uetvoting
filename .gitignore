@@ -1,0 +1,24 @@
+# IDE
+.vscode
+.idea
+
+# Environment
+.envrc
+.env
+
+# Docker data
+volumes
+docker-compose.yml
+
+# Test coverage file
+coverage.html
+coverage.txt
+
+# Docker build script
+scripts/docker-build.sh
+
+# Db data
+dumps
+
+# Customize source
+main.go
