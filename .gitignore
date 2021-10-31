@@ -8,7 +8,6 @@
 
 # Docker data
 volumes
-docker-compose.yml
 
 # Test coverage file
 coverage.html
@@ -19,6 +18,3 @@ scripts/docker-build.sh
 
 # Db data
 dumps
-
-# Customize source
-main.go
