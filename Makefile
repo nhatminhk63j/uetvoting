@@ -18,7 +18,7 @@ clean:
 make-dir: clean
 	mkdir -p $(PROTO_GO_GEN)
 
-install-linux: install-protoc install-protoc-go install-lint
+install-linux: install-protoc install-protoc-go install-lint install-go-tools
 
 install-protoc:
 	curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v$(PROTOC_LINUX_VERSION)/$(PROTOC_LINUX_ZIP)
@@ -40,6 +40,9 @@ install-lint:
 	sudo curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sudo sh -s -- -b $(go env GOPATH)/bin v1.30.0
 	sudo curl -sSL "https://github.com/bufbuild/buf/releases/download/v$(BUF_VERSION)/$(BUF_BINARY_NAME)-$(shell uname -s)-$(shell uname -m)"  -o "/usr/local/bin/$(BUF_BINARY_NAME)" && sudo chmod +x "/usr/local/bin/$(BUF_BINARY_NAME)"
 
+install-go-tools:
+	go get github.com/vektra/mockery/v2@v2.9.0
+	go get github.com/google/wire/cmd/wire@v0.5.0
 
 gen-proto: clean make-dir
 	env PROTO_GO_GEN=$(PROTO_GO_GEN) sh scripts/gen-proto

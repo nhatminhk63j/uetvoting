@@ -1,6 +1,10 @@
 package config
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/alecthomas/kong"
+)
 
 // MysqlConfig define mysql config.
 type MysqlConfig struct {
@@ -18,4 +22,24 @@ type MysqlConfig struct {
 // ToURI ...
 func (cfg MysqlConfig) ToURI() string {
 	return fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=true", cfg.User, cfg.Password, cfg.Host, cfg.Port, cfg.Schema)
+}
+
+// This function replaces Kong's default command parsing behaviour
+// by only parsing environment variables instead of both args and env var.
+func mustParseEnv(config *MysqlConfig) {
+	parser, err := kong.New(config)
+	if err != nil {
+		panic(err)
+	}
+	_, err = parser.Parse([]string{})
+	if err != nil {
+		panic(err)
+	}
+}
+
+// LoadMysqlConfig ...
+func LoadMysqlConfig() MysqlConfig {
+	var config MysqlConfig
+	mustParseEnv(&config)
+	return config
 }
