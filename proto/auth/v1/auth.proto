@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package auth.v1;
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+
+option go_package = "go.tekoapis.com/uetvoting/pb/auth/v1;auth";
+
+// AuthService to check status, authentication and authorization.
+service AuthService {
+    // Login.
+    rpc Login (LoginRequest) returns (LoginResponse) {
+        option (google.api.http) = {
+            post: "/v1/login"
+            body: "*"
+        };
+    }
+}
+
+// AuthServiceLoginRequest
+message LoginRequest {
+    string id_token = 1[(validate.rules).string.min_len = 1];
+}
+
+// AuthServiceLoginResponse
+message LoginResponse {
+    string access_token = 1;
+}

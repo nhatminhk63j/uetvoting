@@ -17,7 +17,8 @@ import (
 
 	"github.com/nhatminhk63j/uetvoting/config"
 	"github.com/nhatminhk63j/uetvoting/pkg/logger"
-	"github.com/nhatminhk63j/uetvoting/server/handler"
+	"github.com/nhatminhk63j/uetvoting/server/handler/auth"
+	"github.com/nhatminhk63j/uetvoting/server/handler/health"
 	"github.com/nhatminhk63j/uetvoting/server/middleware/grpc_error"
 	"github.com/nhatminhk63j/uetvoting/services"
 )
@@ -32,10 +33,6 @@ func Serve(cfg *config.AppConfig) {
 	defer func() {
 		sentry.Flush(2 * time.Second)
 	}()
-
-	var (
-		healthServer *handler.HealthServiceServer
-	)
 
 	internalServerErr := status.Error(codes.Internal, "Something went wrong in our side.")
 	recoveryOpt := grpc_recovery.WithRecoveryHandler(func(err interface{}) error {
@@ -70,7 +67,12 @@ func Serve(cfg *config.AppConfig) {
 			grpcvalidator.StreamServerInterceptor(),
 			grpc_recovery.StreamServerInterceptor(recoveryOpt),
 		))
-	if err := sv.Register(healthServer); err != nil {
+
+	// register handler ...
+	if err := sv.Register(
+		&health.ServiceServer{},
+		auth.InitializeHandler(),
+	); err != nil {
 		logger.Fatalf("error register servers: %v", err)
 	}
 

@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"fmt"
+	"github.com/nhatminhk63j/uetvoting/pb/auth/v1"
 	"net"
 	"net/http"
 	"os"
@@ -80,8 +81,13 @@ func (s *Server) Register(grpcServer ...interface{}) error {
 			if err := health.RegisterHealthCheckServiceHandlerFromEndpoint(context.Background(), s.mux, s.cfg.GRPC.String(), []grpc.DialOption{grpc.WithInsecure()}); err != nil {
 				return err
 			}
+		case auth.AuthServiceServer:
+			auth.RegisterAuthServiceServer(s.gRPC, _srv)
+			if err := auth.RegisterAuthServiceHandlerFromEndpoint(context.Background(), s.mux, s.cfg.GRPC.String(), []grpc.DialOption{grpc.WithInsecure()}); err != nil {
+				return err
+			}
 		default:
-			return fmt.Errorf("Unknown GRPC Service to register %#v", srv)
+			return fmt.Errorf("unknown GRPC Service to register %#v", srv)
 		}
 	}
 	return nil
