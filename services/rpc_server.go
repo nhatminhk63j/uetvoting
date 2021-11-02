@@ -3,8 +3,6 @@ package services
 import (
 	"context"
 	"fmt"
-	"github.com/nhatminhk63j/uetvoting/pb/auth/v1"
-	"github.com/nhatminhk63j/uetvoting/pb/event/v1"
 	"net"
 	"net/http"
 	"os"
@@ -17,6 +15,8 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"google.golang.org/grpc"
 
+	"github.com/nhatminhk63j/uetvoting/pb/auth/v1"
+	"github.com/nhatminhk63j/uetvoting/pb/event/v1"
 	"github.com/nhatminhk63j/uetvoting/pb/health/v1"
 )
 

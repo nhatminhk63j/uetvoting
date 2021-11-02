@@ -30,3 +30,17 @@ func (s *ServiceServer) UpsertEvent(ctx context.Context, in *pb.UpsertEventReque
 		Id: int32(eventID),
 	}, nil
 }
+
+// GetEventByID ...
+func (s *ServiceServer) GetEventByID(ctx context.Context, in *pb.GetEventByIDRequest) (*pb.GetEventByIDResponse, error) {
+	eventDetail, err := s.eventSvc.GetEventDetail(ctx, int(in.Id))
+	if err != nil {
+		return nil, err
+	}
+
+	response, err := eventDetail.ToProtoStruct()
+	if err != nil {
+		return nil, err
+	}
+	return response, nil
+}

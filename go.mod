@@ -7,6 +7,7 @@ require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/envoyproxy/protoc-gen-validate v0.4.1
 	github.com/getsentry/sentry-go v0.11.0
+	github.com/gogo/protobuf v1.3.1
 	github.com/golang-migrate/migrate/v4 v4.14.1
 	github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
 	github.com/golang/protobuf v1.4.3

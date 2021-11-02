@@ -203,6 +203,177 @@ var _ interface {
 	ErrorName() string
 } = UpsertEventResponseValidationError{}
 
+// Validate checks the field values on GetEventByIDRequest with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *GetEventByIDRequest) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Id
+
+	return nil
+}
+
+// GetEventByIDRequestValidationError is the validation error returned by
+// GetEventByIDRequest.Validate if the designated constraints aren't met.
+type GetEventByIDRequestValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetEventByIDRequestValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetEventByIDRequestValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetEventByIDRequestValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetEventByIDRequestValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetEventByIDRequestValidationError) ErrorName() string {
+	return "GetEventByIDRequestValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetEventByIDRequestValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetEventByIDRequest.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetEventByIDRequestValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetEventByIDRequestValidationError{}
+
+// Validate checks the field values on GetEventByIDResponse with the rules
+// defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *GetEventByIDResponse) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Id
+
+	// no validation rules for Name
+
+	// no validation rules for Participants
+
+	for idx, item := range m.GetSections() {
+		_, _ = idx, item
+
+		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return GetEventByIDResponseValidationError{
+					field:  fmt.Sprintf("Sections[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	if v, ok := interface{}(m.GetUpdatedAt()).(interface{ Validate() error }); ok {
+		if err := v.Validate(); err != nil {
+			return GetEventByIDResponseValidationError{
+				field:  "UpdatedAt",
+				reason: "embedded message failed validation",
+				cause:  err,
+			}
+		}
+	}
+
+	// no validation rules for IsOpened
+
+	// no validation rules for IsApproved
+
+	return nil
+}
+
+// GetEventByIDResponseValidationError is the validation error returned by
+// GetEventByIDResponse.Validate if the designated constraints aren't met.
+type GetEventByIDResponseValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetEventByIDResponseValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetEventByIDResponseValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetEventByIDResponseValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetEventByIDResponseValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetEventByIDResponseValidationError) ErrorName() string {
+	return "GetEventByIDResponseValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetEventByIDResponseValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetEventByIDResponse.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetEventByIDResponseValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetEventByIDResponseValidationError{}
+
 // Validate checks the field values on UpsertEventRequest_Section with the
 // rules defined in the proto definition for this message. If any rules are
 // violated, an error is returned.
@@ -472,3 +643,266 @@ var _ interface {
 	Cause() error
 	ErrorName() string
 } = UpsertEventRequest_OptionValidationError{}
+
+// Validate checks the field values on GetEventByIDResponse_Section with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *GetEventByIDResponse_Section) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Id
+
+	// no validation rules for Name
+
+	// no validation rules for Description
+
+	// no validation rules for Position
+
+	for idx, item := range m.GetQuestions() {
+		_, _ = idx, item
+
+		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return GetEventByIDResponse_SectionValidationError{
+					field:  fmt.Sprintf("Questions[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	return nil
+}
+
+// GetEventByIDResponse_SectionValidationError is the validation error returned
+// by GetEventByIDResponse_Section.Validate if the designated constraints
+// aren't met.
+type GetEventByIDResponse_SectionValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetEventByIDResponse_SectionValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetEventByIDResponse_SectionValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetEventByIDResponse_SectionValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetEventByIDResponse_SectionValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetEventByIDResponse_SectionValidationError) ErrorName() string {
+	return "GetEventByIDResponse_SectionValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetEventByIDResponse_SectionValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetEventByIDResponse_Section.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetEventByIDResponse_SectionValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetEventByIDResponse_SectionValidationError{}
+
+// Validate checks the field values on GetEventByIDResponse_Question with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *GetEventByIDResponse_Question) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Id
+
+	// no validation rules for Content
+
+	// no validation rules for Position
+
+	// no validation rules for Type
+
+	// no validation rules for IsRequired
+
+	// no validation rules for LimitedChoice
+
+	for idx, item := range m.GetOptions() {
+		_, _ = idx, item
+
+		if v, ok := interface{}(item).(interface{ Validate() error }); ok {
+			if err := v.Validate(); err != nil {
+				return GetEventByIDResponse_QuestionValidationError{
+					field:  fmt.Sprintf("Options[%v]", idx),
+					reason: "embedded message failed validation",
+					cause:  err,
+				}
+			}
+		}
+
+	}
+
+	return nil
+}
+
+// GetEventByIDResponse_QuestionValidationError is the validation error
+// returned by GetEventByIDResponse_Question.Validate if the designated
+// constraints aren't met.
+type GetEventByIDResponse_QuestionValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetEventByIDResponse_QuestionValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetEventByIDResponse_QuestionValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetEventByIDResponse_QuestionValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetEventByIDResponse_QuestionValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetEventByIDResponse_QuestionValidationError) ErrorName() string {
+	return "GetEventByIDResponse_QuestionValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetEventByIDResponse_QuestionValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetEventByIDResponse_Question.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetEventByIDResponse_QuestionValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetEventByIDResponse_QuestionValidationError{}
+
+// Validate checks the field values on GetEventByIDResponse_Option with the
+// rules defined in the proto definition for this message. If any rules are
+// violated, an error is returned.
+func (m *GetEventByIDResponse_Option) Validate() error {
+	if m == nil {
+		return nil
+	}
+
+	// no validation rules for Id
+
+	if utf8.RuneCountInString(m.GetContent()) < 1 {
+		return GetEventByIDResponse_OptionValidationError{
+			field:  "Content",
+			reason: "value length must be at least 1 runes",
+		}
+	}
+
+	return nil
+}
+
+// GetEventByIDResponse_OptionValidationError is the validation error returned
+// by GetEventByIDResponse_Option.Validate if the designated constraints
+// aren't met.
+type GetEventByIDResponse_OptionValidationError struct {
+	field  string
+	reason string
+	cause  error
+	key    bool
+}
+
+// Field function returns field value.
+func (e GetEventByIDResponse_OptionValidationError) Field() string { return e.field }
+
+// Reason function returns reason value.
+func (e GetEventByIDResponse_OptionValidationError) Reason() string { return e.reason }
+
+// Cause function returns cause value.
+func (e GetEventByIDResponse_OptionValidationError) Cause() error { return e.cause }
+
+// Key function returns key value.
+func (e GetEventByIDResponse_OptionValidationError) Key() bool { return e.key }
+
+// ErrorName returns error name.
+func (e GetEventByIDResponse_OptionValidationError) ErrorName() string {
+	return "GetEventByIDResponse_OptionValidationError"
+}
+
+// Error satisfies the builtin error interface
+func (e GetEventByIDResponse_OptionValidationError) Error() string {
+	cause := ""
+	if e.cause != nil {
+		cause = fmt.Sprintf(" | caused by: %v", e.cause)
+	}
+
+	key := ""
+	if e.key {
+		key = "key for "
+	}
+
+	return fmt.Sprintf(
+		"invalid %sGetEventByIDResponse_Option.%s: %s%s",
+		key,
+		e.field,
+		e.reason,
+		cause)
+}
+
+var _ error = GetEventByIDResponse_OptionValidationError{}
+
+var _ interface {
+	Field() string
+	Reason() string
+	Key() bool
+	Cause() error
+	ErrorName() string
+} = GetEventByIDResponse_OptionValidationError{}

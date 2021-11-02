@@ -2,6 +2,7 @@ package event
 
 import (
 	"context"
+	"golang.org/x/xerrors"
 
 	"github.com/nhatminhk63j/uetvoting/pkg/auth"
 	"github.com/nhatminhk63j/uetvoting/server/middleware/authentication"
@@ -10,6 +11,7 @@ import (
 // Service ...
 type Service interface {
 	UpsertEvent(ctx context.Context, event *Event) (eventID int, err error)
+	GetEventDetail(ctx context.Context, eventID int) (*Event, error)
 }
 
 type service struct {
@@ -27,7 +29,7 @@ func NewService(repo Repository) Service {
 func (s service) UpsertEvent(ctx context.Context, event *Event) (eventID int, err error) {
 	userInfo := authentication.GetUserInfoFromContext(ctx)
 	if event.ID > 0 {
-		eventInfo, err := s.repo.GetEventByID(ctx, event.ID)
+		eventInfo, err := s.repo.GetEventInfo(ctx, event.ID)
 		if err != nil {
 			return 0, err
 		}
@@ -40,4 +42,17 @@ func (s service) UpsertEvent(ctx context.Context, event *Event) (eventID int, er
 		event.UpdatedBy = userInfo.Id
 	}
 	return s.repo.UpsertEvent(ctx, event)
+}
+
+// GetEventDetail ...
+func (s service) GetEventDetail(ctx context.Context, eventID int) (*Event, error) {
+	userInfo := authentication.GetUserInfoFromContext(ctx)
+	event, err := s.repo.GetEventDetail(ctx, eventID)
+	if err != nil {
+		return nil, xerrors.Errorf("error getting event detail: %w", err)
+	}
+	if userInfo.Id != event.CreatedBy {
+		return nil, &auth.NoPermissionError{}
+	}
+	return event, nil
 }

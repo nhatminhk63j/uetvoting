@@ -4,6 +4,7 @@ package event
 
 import (
 	"github.com/google/wire"
+
 	"github.com/nhatminhk63j/uetvoting/pkg/db"
 )
 

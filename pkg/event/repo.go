@@ -10,7 +10,8 @@ import (
 
 type Repository interface {
 	UpsertEvent(ctx context.Context, event *Event) (eventID int, err error)
-	GetEventByID(ctx context.Context, eventID int) (*Event, error)
+	GetEventInfo(ctx context.Context, eventID int) (*Event, error)
+	GetEventDetail(ctx context.Context, eventID int) (*Event, error)
 }
 
 type repo struct {
@@ -86,12 +87,25 @@ func removeAllSections(ctx context.Context, tx *gorm.DB, event *Event) error {
 	return nil
 }
 
-// GetEventByID ...
-func (r repo) GetEventByID(ctx context.Context, eventID int) (*Event, error) {
+// GetEventInfo ...
+func (r repo) GetEventInfo(ctx context.Context, eventID int) (*Event, error) {
 	var event Event
 	err := r.db.First(&event, eventID).Error
 	if err != nil {
 		return nil, xerrors.Errorf("error getting event by id: %w", err)
 	}
 	return &event, nil
+}
+
+// GetEventDetail ...
+func (r repo) GetEventDetail(ctx context.Context, eventID int) (*Event, error) {
+	var detail Event
+	err := r.db.Preload("Sections.Questions.Options").
+		Preload("Sections.Questions").
+		Preload(clause.Associations).
+		First(&detail, eventID).Error
+	if err != nil {
+		return nil, xerrors.Errorf("error getting event detail: %w", err)
+	}
+	return &detail, nil
 }

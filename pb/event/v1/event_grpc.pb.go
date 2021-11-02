@@ -17,7 +17,10 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type EventServiceClient interface {
+	// UpsertEvent ...
 	UpsertEvent(ctx context.Context, in *UpsertEventRequest, opts ...grpc.CallOption) (*UpsertEventResponse, error)
+	// GetEventByID ...
+	GetEventByID(ctx context.Context, in *GetEventByIDRequest, opts ...grpc.CallOption) (*GetEventByIDResponse, error)
 }
 
 type eventServiceClient struct {
@@ -37,11 +40,23 @@ func (c *eventServiceClient) UpsertEvent(ctx context.Context, in *UpsertEventReq
 	return out, nil
 }
 
+func (c *eventServiceClient) GetEventByID(ctx context.Context, in *GetEventByIDRequest, opts ...grpc.CallOption) (*GetEventByIDResponse, error) {
+	out := new(GetEventByIDResponse)
+	err := c.cc.Invoke(ctx, "/event.v1.EventService/GetEventByID", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // EventServiceServer is the server API for EventService service.
 // All implementations must embed UnimplementedEventServiceServer
 // for forward compatibility
 type EventServiceServer interface {
+	// UpsertEvent ...
 	UpsertEvent(context.Context, *UpsertEventRequest) (*UpsertEventResponse, error)
+	// GetEventByID ...
+	GetEventByID(context.Context, *GetEventByIDRequest) (*GetEventByIDResponse, error)
 	mustEmbedUnimplementedEventServiceServer()
 }
 
@@ -51,6 +66,9 @@ type UnimplementedEventServiceServer struct {
 
 func (UnimplementedEventServiceServer) UpsertEvent(context.Context, *UpsertEventRequest) (*UpsertEventResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpsertEvent not implemented")
+}
+func (UnimplementedEventServiceServer) GetEventByID(context.Context, *GetEventByIDRequest) (*GetEventByIDResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetEventByID not implemented")
 }
 func (UnimplementedEventServiceServer) mustEmbedUnimplementedEventServiceServer() {}
 
@@ -83,6 +101,24 @@ func _EventService_UpsertEvent_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _EventService_GetEventByID_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetEventByIDRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(EventServiceServer).GetEventByID(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/event.v1.EventService/GetEventByID",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(EventServiceServer).GetEventByID(ctx, req.(*GetEventByIDRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _EventService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "event.v1.EventService",
 	HandlerType: (*EventServiceServer)(nil),
@@ -90,6 +126,10 @@ var _EventService_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpsertEvent",
 			Handler:    _EventService_UpsertEvent_Handler,
+		},
+		{
+			MethodName: "GetEventByID",
+			Handler:    _EventService_GetEventByID_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
