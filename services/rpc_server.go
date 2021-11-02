@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/nhatminhk63j/uetvoting/pb/auth/v1"
+	"github.com/nhatminhk63j/uetvoting/pb/event/v1"
 	"net"
 	"net/http"
 	"os"
@@ -84,6 +85,11 @@ func (s *Server) Register(grpcServer ...interface{}) error {
 		case auth.AuthServiceServer:
 			auth.RegisterAuthServiceServer(s.gRPC, _srv)
 			if err := auth.RegisterAuthServiceHandlerFromEndpoint(context.Background(), s.mux, s.cfg.GRPC.String(), []grpc.DialOption{grpc.WithInsecure()}); err != nil {
+				return err
+			}
+		case event.EventServiceServer:
+			event.RegisterEventServiceServer(s.gRPC, _srv)
+			if err := event.RegisterEventServiceHandlerFromEndpoint(context.Background(), s.mux, s.cfg.GRPC.String(), []grpc.DialOption{grpc.WithInsecure()}); err != nil {
 				return err
 			}
 		default:

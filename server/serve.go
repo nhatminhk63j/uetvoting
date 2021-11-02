@@ -16,9 +16,13 @@ import (
 	"google.golang.org/grpc/status"
 
 	"github.com/nhatminhk63j/uetvoting/config"
+	"github.com/nhatminhk63j/uetvoting/pkg/jwt"
 	"github.com/nhatminhk63j/uetvoting/pkg/logger"
 	"github.com/nhatminhk63j/uetvoting/server/handler/auth"
+	"github.com/nhatminhk63j/uetvoting/server/handler/event"
 	"github.com/nhatminhk63j/uetvoting/server/handler/health"
+	"github.com/nhatminhk63j/uetvoting/server/middleware/authentication"
+	"github.com/nhatminhk63j/uetvoting/server/middleware/authorization"
 	"github.com/nhatminhk63j/uetvoting/server/middleware/grpc_error"
 	"github.com/nhatminhk63j/uetvoting/services"
 )
@@ -59,6 +63,8 @@ func Serve(cfg *config.AppConfig) {
 			grpcvalidator.UnaryServerInterceptor(),
 			grpc_error.UnaryServerInterceptor(cfg.AppMode, internalServerErr),
 			grpc_recovery.UnaryServerInterceptor(recoveryOpt),
+			authentication.UnaryServerInterceptor(jwt.NewJWTResolver()),
+			authorization.UnaryServerInterceptor(),
 		),
 		grpcmiddleware.WithStreamServerChain(
 			grpc_prometheus.StreamServerInterceptor,
@@ -72,6 +78,7 @@ func Serve(cfg *config.AppConfig) {
 	if err := sv.Register(
 		&health.ServiceServer{},
 		auth.InitializeHandler(),
+		event.InitializeHandler(),
 	); err != nil {
 		logger.Fatalf("error register servers: %v", err)
 	}

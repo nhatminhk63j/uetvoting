@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package event.v1;
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+
+option go_package = "go.tekoapis.com/uetvoting/pb/event/v1;event";
+
+// EventService ...
+service EventService {
+    rpc UpsertEvent (UpsertEventRequest) returns (UpsertEventResponse) {
+        option (google.api.http) = {
+            post: "/v1/events"
+            body: "*"
+        };
+    }
+}
+
+// UpsertEventRequest ...
+message UpsertEventRequest {
+    int32 id = 1;
+    string name = 2 [(validate.rules).string.min_len = 1];
+    string participants = 3 [(validate.rules).string.min_len = 4];
+    // Section ...
+    message Section {
+        string name = 2 [(validate.rules).string.min_len = 1];
+        string description = 3 [(validate.rules).string.min_len = 1];
+        int32 position = 4;
+        repeated Question questions = 5;
+    }
+    // Question ...
+    message Question {
+        string content = 2 [(validate.rules).string.min_len = 1];
+        int32 position = 3;
+        string type = 4;
+        bool is_required = 5;
+        int32 limited_choice = 6;
+        repeated Option options = 7;
+    }
+    // Option ...
+    message Option {
+        string content = 1 [(validate.rules).string.min_len = 1];
+    }
+    repeated Section sections = 4;
+}
+
+// UpsertEventResponse ...
+message UpsertEventResponse {
+    int32 id = 1;
+}

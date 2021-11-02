@@ -21,7 +21,7 @@ service AuthService {
 
 // AuthServiceLoginRequest
 message LoginRequest {
-    string id_token = 1[(validate.rules).string.min_len = 1];
+    string id_token = 1 [(validate.rules).string.min_len = 1];
 }
 
 // AuthServiceLoginResponse
